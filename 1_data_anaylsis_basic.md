@@ -348,7 +348,7 @@ df.loc[0, '전화번호'] = '01012341234' # Editing data
 # 1  영희  25  인천          NaN
 ```
 
-#### Drop: *Deleting column*
+#### .drop: *Deleting column*
 
 If the value of **axis** is 1, drop deletes **column**, and drop deletes **row** if axis is 0.   
 If the value of **inplace** is True, drop changes original, and if it is false, drop doesn't change the original.

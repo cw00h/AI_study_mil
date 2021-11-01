@@ -1,13 +1,13 @@
 # Python Data Analysis Basic
 
-## Numpy
+## 1️⃣ Basics of NumPy
 
-### What is Numpy?
+### What is NumPy?
 
 Numpy means **Numerical Python**. It is a library that helps to deal with large multi-dimensional arrays in python.   
 You can deal with array **without for or while loops**. Numpy supports **fast calculation**, and uses memory more **efficiently** than **python List**.
 
-### Creating an array in Numpy
+### Creating an array in NumPy
 
 ```python
 import numpy as np
@@ -139,3 +139,104 @@ print(x[1:, [2, 0, 1]])
 # [[ 7  5  6]
 #  [11  9 10]]
 ```
+## 2️⃣ Basics of pandas
+
+### What is pandas?
+**pandas** is a library designed based on **NumPy**, which can effectively process and store structured data.
+
+### Series
+Enhanced version of Numpy's array. Series have both Data and Index.   
+Series holds values in form of **ndarray**.
+
+```python
+import pandas as pd
+data = pd.Series([1, 2, 3, 4])
+print(data)
+
+# 0    1
+# 1    2
+# 2    3
+# 3    4
+# dtype: int64
+
+print(type(data)) # <class 'pandas.core.series.Series'>
+print(data.values) # [1 2 3 4]
+print(type(data.values)) # <class 'numpy.ndarray'>
+
+data = pd.Series([1, 2, 3, 4], dtype = "float") # You can designate type of Series using "dtype" parameter
+print(data.dtype) # float64
+
+data = pd.Series([1, 2, 3, 4], index = ['a', 'b', 'c', 'd'])
+data['c'] = 5 #You can designate index and access items by using the index
+
+population_dict= {
+    'china': 141500,
+    'japan': 12718,
+    'korea': 5180,
+    'usa': 32676
+}
+population = pd.Series(population_dict) #You can create Seriers using Dictionary
+```
+
+### DataFrame
+
+Data of multiple **series** gathered in rows and columns.
+
+```python
+population_dict= {
+    'china': 141500,
+    'japan': 12718,
+    'korea': 5180,
+    'usa': 32676
+}
+population = pd.Series(population_dict)
+
+gdp_dict= {
+    'china': 1409250000,
+    'japan': 516700000,
+    'korea': 169320000,
+    'usa': 2041280000,
+}
+gdp= pd.Series(gdp_dict)
+
+country = pd.DataFrame({
+    'gdp': gdp,
+    'population': population
+})
+print(country)
+#              gdp  population
+# china  1409250000      141500
+# japan   516700000       12718
+# korea   169320000        5180
+# usa    2041280000       32676
+
+#You can also create DataFrame using Dictionary.
+data = {
+    'country': ['china','japan','korea','usa'],
+    'gdp': [1409250000,516700000, 169320000, 2041280000],
+    'population': [141500,12718, 5180, 32676]}
+}
+country = pd.DataFrame(data)
+country = country.set_index('country')
+
+print(country.shape) # (4, 2)
+print(country.size) # 8
+print(country.ndim) # 2
+print(country.values) 
+# [[1409250000     141500]
+#  [ 516700000      12718]
+#  [ 169320000       5180]
+#  [2041280000      32676]]
+
+# Defining name of DataFrame's index & column
+country.index.name = "Country"
+country.columns.name = "Info"
+
+print(country.index)
+# Index(['china', 'japan', 'korea', 'usa'], dtype='object', name='Country’)
+print(country.columns)
+# Index(['gdp', 'population'], dtype='object', name='Info')
+
+#Saving & Loading DataFrame
+country.to_csv("./country.csv")
+country = pd.read_csv("./country.csv")

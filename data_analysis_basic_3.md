@@ -140,4 +140,55 @@ df.mean(axis = 1, skipna = False)
 # b    42.5 -> no longer returned as NaN
 # c    55.0
 # dtype: float64
+```
 
+### Grouping
+
+#### .groupby
+When you want to count based on the conditions, use **.groupby**.
+```python
+df = pd.DataFrame({
+    'data1' : range(6),
+    'data2' : [4, 4, 6, 0, 6, 1],
+    'key' : ['A', 'B', 'C', 'A', 'B', 'C']
+})
+
+# data1  data2 key
+# 0      0      4   A
+# 1      1      4   B
+# 2      2      6   C
+# 3      3      0   A
+# 4      4      6   B
+# 5      5      1   C
+
+df.groupby('key').sum()
+# data1  data2
+# key              
+# A        3      4
+# B        5     10
+# C        7      7
+
+df.groupby(['key', 'data1']).sum() //you can group by several columns
+# data2
+# key data1       
+# A   0          4
+#     3          0
+# B   1          4
+#     4          6
+# C   2          6
+#     5          1
+```
+
+#### .aggregate
+
+You can use several aggregation functions by once using **.aggregate**.   
+Aggregate gets an **array of functions** as arguments, where the basic aggregate functions should be written by their name or their name with quotation marks like **min** or **'min'**, and the functions of numpy should be written with *np.* like **np.median**.
+
+```python
+df.groupby('key').aggregate(['min', np.median, max])
+# data1            data2           
+#       min median max   min median max
+# key                                  
+# A       0    1.5   3     0    2.0   4
+# B       1    2.5   4     4    5.0   6
+# C       2    3.5   5     1    3.5   6

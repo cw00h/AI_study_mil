@@ -146,7 +146,7 @@ country['gdp'] # -> returns Series
 # usa      2041280000
 # Name: gdp, dtype: int64
 
-country[['gdp']] # -> returns DataFrame... Maybe this is some kind of fancy indexing..
+country[['gdp']] # -> This is fancy indexing, so it returns DataFrame
 # gdp
 # china  1409250000
 # japan   516700000

@@ -182,7 +182,8 @@ df.groupby(['key', 'data1']).sum() //you can group by several columns
 #### .aggregate
 
 You can use several aggregation functions by once using **.aggregate**.   
-Aggregate gets an **array of functions** as arguments, where the basic aggregate functions should be written by their name or their name with quotation marks like **min** or **'min'**, and the functions of numpy should be written with *np.* like **np.median**.
+.aggregate gets an **array of functions** or **dictionary of column and functions** as arguments, where the basic aggregate functions should be written by their name or their name with quotation marks like **min** or **'min'**, and the functions of numpy should be written with *np.* like **np.median**.   
+.aggregate returns **DataFrame**.
 
 ```python
 df.groupby('key').aggregate(['min', np.median, max])
@@ -192,3 +193,72 @@ df.groupby('key').aggregate(['min', np.median, max])
 # A       0    1.5   3     0    2.0   4
 # B       1    2.5   4     4    5.0   6
 # C       2    3.5   5     1    3.5   6
+
+df.groupby('key').aggregate({'data1': 'min', 'data2' : np.sum}) # returns min for data1 & sum for data2
+# data1  data2
+# key              
+# A        0      4
+# B        1     10
+# C        2      7
+```
+
+#### .filter
+
+Note: At here, **.filter** means *[pandas.core.groupby.DataFrameGroupBy.filter]*(https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.filter.html?highlight=filter#pandas.core.groupby.DataFrameGroupBy.filter).
+
+You can filter DataFrame's subgroup according to custom function using **.filter**. The function must return **Boolean**.
+
+```python
+def filter_by_mean(x):
+    return x['data2'].mean() > 3
+    
+df.groupby('key').mean()
+# data1  data2
+# key              
+# A      1.5    2.0
+# B      2.5    5.0
+# C      3.5    3.5
+
+df.groupby('key').filter(filter_by_mean)
+# data1  data2 key
+# 1      1      4   B
+# 2      2      6   C
+# 4      4      6   B
+# 5      5      1   C
+# Items whose key is A were excluded!
+```
+
+#### .apply
+You can apply custom functions to grouped data by **groupby**.
+```python
+df.groupby('key').apply(lambda x: x.max() - x.min())
+# data1  data2
+# key              
+# A        3      4
+# B        3      2
+# C        3      5
+```
+
+#### get_group
+You can bring data according to key value from grouped data using **get_group**.
+```python
+df = pd.read_csv("./univ.csv")
+df.head() # -> shows top 5 data
+# 시도 학교명
+# 0     충남      충남도립청양대학
+# 1     경기      한국복지대학교
+# 2     경북      가톨릭상지대학교
+# 3     전북      군산간호대학교
+# 4     경남      거제대학교
+
+df.groupby("시도").get_group("충남")
+# After grouping according to "시도", return the DataFrame consisting only of items whose "시도" value is "충남".
+# 시도 학교명
+# 0     충남      충남도립청양대학
+# 44    충남      신성대학교
+# 60    충남      백석문화대학교
+#...
+
+len(df.groupby("시도").get_group("충남")) # 94
+```
+

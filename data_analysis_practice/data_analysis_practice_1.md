@@ -143,3 +143,12 @@ num_set = {1, 3, 5, 7}
 print(6 in num_set)
 print(len(num_set))
 ```
+
+#### Set Operation
+
+```python
+union = set1 | set2
+intersection = set1 & set2
+diff = set1 - set2
+xor = set1 ^ set2
+```

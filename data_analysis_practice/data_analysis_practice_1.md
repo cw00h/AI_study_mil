@@ -107,6 +107,39 @@ JSON is the most standard way to exchange data in a web environment.
 
 Use **loads()** to converse JSON to Dictionary, and use **dumps()** to converse Dictionary to JSON.
 
+```python
+def jsonfile_to_dic(filename):
+    with open(filename) as file:
+        json_string = file.read()
+        
+        return json.loads(json_strin)
 
+def dictionary_to_json(dictionary, filename):
+    with open(filenamem, 'w') as file:
+        file.write(json.dumps(dictionary))
+```
 
+### Set
 
+#### Creating Set
+```python
+set1 = {1, 2, 3}
+set2 = set([1, 2, 3])
+set3 = {3, 2, 3, 1} # -> {1, 2, 3}
+```
+
+#### .add, .update, .remove, .discard
+```python
+num_set = {1, 3, 5, 7}
+num_set.append(9)
+num_set.update([3, 15, 4]) # -> append several items
+num_set.remove(7) # -> item you want to erase must be in set
+num_set.discard(13) # -> if item you want to erase is not in set, discard does nothing.
+```
+
+### in, len
+```python
+num_set = {1, 3, 5, 7}
+print(6 in num_set)
+print(len(num_set))
+```
